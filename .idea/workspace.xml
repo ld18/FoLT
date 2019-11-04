@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b243788-5a64-47ee-816a-a8014a1c0bb1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Homework_02.py" beforeDir="false" afterPath="$PROJECT_DIR$/Homework_02.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Homework_02.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+            <state relative-caret-position="933">
+              <caret line="83" column="48" selection-start-line="83" selection-start-column="40" selection-end-line="83" selection-end-column="48" />
               <folding>
                 <element signature="e#1#12#0" expanded="true" />
               </folding>
@@ -56,6 +55,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -67,7 +67,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -178,15 +177,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="102" y="-7" width="1139" height="837" extended-state="6" />
+    <frame x="54" y="-8" width="2514" height="1456" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14868541" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14862682" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.2719547" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.27135298" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39954337" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -210,8 +209,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Homework_02.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+        <state relative-caret-position="933">
+          <caret line="83" column="48" selection-start-line="83" selection-start-column="40" selection-end-line="83" selection-end-column="48" />
           <folding>
             <element signature="e#1#12#0" expanded="true" />
           </folding>

@@ -76,12 +76,12 @@ def print_10mostImprobableBigrams(fdist_fg, fdist_bg):
             break
         print(
             "( "+ spi[0][0] +" "+ spi[0][1]
-            +" )\t\t LL: "+ str(spi[1])
+            +" )\t\t\tLL: "+ str(spi[1])
         )
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level = logging.ERROR)
+    logging.basicConfig(level = logging.CRITICAL)
 
     text_fg = nltk.corpus.gutenberg.words("carroll-alice.txt")
     bigrams_fg = list(nltk.bigrams(text_fg))
