@@ -7,8 +7,8 @@ def compute_LL(phrase, fdist_fg, fdist_bg):
     try:
         A = fdist_fg[phrase]
         B = fdist_bg[phrase]
-        C = len(fdist_fg)
-        D = len(fdist_bg)
+        C = fdist_fg.N()
+        D = fdist_bg.N()
         N = C + D
         E1 = (C * (A + B)) / N
         E2 = (D * (A + B)) / N
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     bigrams_fg = list(nltk.bigrams(text_fg))
     fdist_bigrams_fg = nltk.FreqDist(bigrams_fg)
 
-    text_bg = nltk.corpus.brown.words("ca01")
+    text_bg = nltk.corpus.brown.words()
     bigrams_bg = list(nltk.bigrams(text_bg))
     fdist_bigrams_bg = nltk.FreqDist(bigrams_bg)
 
