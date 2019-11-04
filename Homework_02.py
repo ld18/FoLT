@@ -5,7 +5,7 @@ import logging
 from math import log
 
 def compute_LL(phrase, fdist_fg, fdist_bg):
-    # Use exception handling for cases with empty frequency distributions
+    # Use exception handling for cases with frequency of 0
     try:
         # Define variables according to the given formula
         A = fdist_fg[phrase]
@@ -19,13 +19,37 @@ def compute_LL(phrase, fdist_fg, fdist_bg):
         log2_AE1 = log(A / E1, 2)
         log2_BE2 = log(B / E2, 2)
         ll = 2 * (A * log2_AE1 + B * log2_BE2)
-        logging.info("compute_LL: noError (A:"+ str(A) +", B:"+ str(B) +", C:"+ str(C) +", D:"+ str(D) +", N:"+ str(N) +")")
+        logging.info(
+            "compute_LL: noError (A:" + str(A) 
+            +", B:"+ str(B)
+            +", C:"+ str(C)
+            +", D:"+ str(D)
+            +", N:"+ str(N)
+            +")"
+        )
         return ll
+    # In cases where the computation of the LL score is not possible, 
+    # return the negative of the largest representable number as the LL score
+    # This guarantees  that these phrases will be at the end of the sorted list
     except ValueError:
-        logging.error("compute_LL: ValueError (A:"+ str(A) +", B:"+ str(B) +", C:"+ str(C) +", D:"+ str(D) +", N:"+ str(N) +")")
+        logging.error(
+            "compute_LL: ValueError (A:" + str(A)
+            +", B:"+ str(B)
+            +", C:"+ str(C)
+            +", D:"+ str(D)
+            +", N:"+ str(N)
+            +")"
+        )
         return - sys.maxsize
     except Exception:
-        logging.critical("compute_LL: unknownError (A:"+ str(A) +", B:"+ str(B) +", C:"+ str(C) +", D:"+ str(D) +", N:"+ str(N) +")")
+        logging.critical(
+            "compute_LL: unknownError (A:" + str(A) 
+            +", B:"+ str(B) 
+            +", C:"+ str(C)
+            +", D:"+ str(D) 
+            +", N:"+ str(N) 
+            +")"
+        )
         exit()
 
 # Function which takes two a foreground and a background frequency 
@@ -50,7 +74,10 @@ def print_10mostImprobableBigrams(fdist_fg, fdist_bg):
     for index, spi in enumerate(SIPs):
         if index >= 10:
             break
-        print("( "+ spi[0][0] +" "+ spi[0][1] +" )\t\t LL: "+ str(spi[1]))
+        print(
+            "( "+ spi[0][0] +" "+ spi[0][1]
+            +" )\t\t LL: "+ str(spi[1])
+        )
 
 
 if __name__ == "__main__":
