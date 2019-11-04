@@ -4,12 +4,15 @@ import sys
 from math import log
 
 def compute_LL(phrase, fdist_fg, fdist_bg):
+    # Use exception handling for cases with empty frequency distributions
     try:
+        # Define variables according to the given formula
         A = fdist_fg[phrase]
         B = fdist_bg[phrase]
         C = fdist_fg.N()
         D = fdist_bg.N()
         N = C + D
+        # Compute the Log-Likelihood stepwise
         E1 = (C * (A + B)) / N
         E2 = (D * (A + B)) / N
         log2_AE1 = log(A / E1, 2)
@@ -21,14 +24,25 @@ def compute_LL(phrase, fdist_fg, fdist_bg):
     except ZeroDivisionError:
         return - sys.maxsize
 
-
+# Function which takes two a foreground and a background frequency 
+# distribution and prints the 10 words from the foreground frequency
+# distribution with the highest LL scores
 def print_10mostImprobableBigrams(fdist_fg, fdist_bg):
+    # Create empty list to store the LL score for every 
+    # bigram
     SIPs = []
+    # Iterate over all bigrams in the frequency distribution 
     for bigram in fdist_fg.keys():
+        # Calculate the LL score for the current bigram and store 
+        # as a tuple together with the bigram itself
         spiTuple = (bigram, compute_LL(bigram, fdist_fg, fdist_bg))
         SIPs.append(spiTuple)
+    
+    # Sort the list of bigrams with LL scores according to LL score
     SIPs.sort(reverse = True, key = lambda spi: spi[1])
     print("10 most improbable bigrams:")
+    # Iterate over the 10 bigrams with the largest LL scores,
+    # print the bigram and the LL score
     for index, spi in enumerate(SIPs):
         if index >= 10:
             break
