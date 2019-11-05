@@ -32,7 +32,7 @@ def compute_LL(phrase, fdist_fg, fdist_bg):
     # return the negative of the largest representable number as the LL score
     # This guarantees  that these phrases will be at the end of the sorted list
     except ValueError:
-        logging.error(
+        logging.info(
             "compute_LL: ValueError (A:" + str(A)
             +", B:"+ str(B)
             +", C:"+ str(C)
@@ -41,16 +41,6 @@ def compute_LL(phrase, fdist_fg, fdist_bg):
             +")"
         )
         return - sys.maxsize
-    except Exception:
-        logging.critical(
-            "compute_LL: unknownError (A:" + str(A) 
-            +", B:"+ str(B) 
-            +", C:"+ str(C)
-            +", D:"+ str(D) 
-            +", N:"+ str(N) 
-            +")"
-        )
-        exit()
 
 # Function which takes two a foreground and a background frequency 
 # distribution and prints the 10 words from the foreground frequency
@@ -59,7 +49,7 @@ def print_10mostImprobableBigrams(fdist_fg, fdist_bg):
     # Create empty list to store the LL score for every 
     # bigram
     SIPs = []
-    # Iterate over all bigrams in the frequency distribution 
+    # Iterate over all bigrams in the frequency distribution
     for bigram in fdist_fg.keys():
         # Calculate the LL score for the current bigram and store 
         # as a tuple together with the bigram itself
