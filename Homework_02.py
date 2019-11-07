@@ -1,46 +1,45 @@
 
 import nltk
-import sys
+import string
 import logging
 from math import log
 
 def compute_LL(phrase, fdist_fg, fdist_bg):
+    # Define variables according to the given formula
     # Use exception handling for cases with frequency of 0
     try:
-        # Define variables according to the given formula
         A = fdist_fg[phrase]
+    except KeyError:
+        A = 0
+    try:
         B = fdist_bg[phrase]
-        C = fdist_fg.N()
-        D = fdist_bg.N()
-        N = C + D
-        # Compute the Log-Likelihood stepwise
-        E1 = (C * (A + B)) / N
-        E2 = (D * (A + B)) / N
+    except KeyError:
+        B = 0
+    C = fdist_fg.N()
+    D = fdist_bg.N()
+    N = C + D
+    # Compute the Log-Likelihood stepwise
+    E1 = (C * (A + B)) / N
+    E2 = (D * (A + B)) / N
+    # Use exception handling for cases with frequency of 0 and set log to 0
+    try:
         log2_AE1 = log(A / E1, 2)
-        log2_BE2 = log(B / E2, 2)
-        ll = 2 * (A * log2_AE1 + B * log2_BE2)
-        logging.info(
-            "compute_LL: noError (A:" + str(A) 
-            +", B:"+ str(B)
-            +", C:"+ str(C)
-            +", D:"+ str(D)
-            +", N:"+ str(N)
-            +")"
-        )
-        return ll
-    # In cases where the computation of the LL score is not possible, 
-    # return the negative of the largest representable number as the LL score
-    # This guarantees  that these phrases will be at the end of the sorted list
     except ValueError:
-        logging.info(
-            "compute_LL: ValueError (A:" + str(A)
-            +", B:"+ str(B)
-            +", C:"+ str(C)
-            +", D:"+ str(D)
-            +", N:"+ str(N)
-            +")"
-        )
-        return - sys.maxsize
+        log2_AE1 = 0
+    try:
+        log2_BE2 = log(B / E2, 2)
+    except ValueError:
+        log2_BE2 = 0
+    ll = 2 * (A * log2_AE1 + B * log2_BE2)
+    logging.info(
+        "compute_LL: noError (A:" + str(A)
+        +", B:"+ str(B)
+        +", C:"+ str(C)
+        +", D:"+ str(D)
+        +", N:"+ str(N)
+        +")"
+    )
+    return ll
 
 # Function which takes two a foreground and a background frequency 
 # distribution and prints the 10 words from the foreground frequency
@@ -69,15 +68,24 @@ def print_10mostImprobableBigrams(fdist_fg, fdist_bg):
             +" )\t\t\tLL: "+ str(spi[1])
         )
 
+def cleanText(text):
+    for token in text:
+        if token in string.punctuation \
+                or token[0] in string.punctuation \
+                or token.lower() in nltk.corpus.stopwords.words('english'):
+            text.remove(token)
+    return text
 
 if __name__ == "__main__":
     logging.basicConfig(level = logging.CRITICAL)
 
-    text_fg = nltk.corpus.gutenberg.words("carroll-alice.txt")
+    text_fg = list(nltk.corpus.gutenberg.words("carroll-alice.txt"))
+    text_fg = cleanText(text_fg)
     bigrams_fg = list(nltk.bigrams(text_fg))
     fdist_bigrams_fg = nltk.FreqDist(bigrams_fg)
 
-    text_bg = nltk.corpus.brown.words()
+    text_bg = list(nltk.corpus.brown.words())
+    text_bg = cleanText(text_bg)
     bigrams_bg = list(nltk.bigrams(text_bg))
     fdist_bigrams_bg = nltk.FreqDist(bigrams_bg)
 
