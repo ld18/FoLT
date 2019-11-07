@@ -1,45 +1,62 @@
 
 import nltk
-import string
+import sys
 import logging
+import string 
 from math import log
 
 def compute_LL(phrase, fdist_fg, fdist_bg):
-    # Define variables according to the given formula
     # Use exception handling for cases with frequency of 0
     try:
+        # Define variables according to the given formula
         A = fdist_fg[phrase]
-    except KeyError:
-        A = 0
-    try:
         B = fdist_bg[phrase]
-    except KeyError:
-        B = 0
-    C = fdist_fg.N()
-    D = fdist_bg.N()
-    N = C + D
-    # Compute the Log-Likelihood stepwise
-    E1 = (C * (A + B)) / N
-    E2 = (D * (A + B)) / N
-    # Use exception handling for cases with frequency of 0 and set log to 0
-    try:
-        log2_AE1 = log(A / E1, 2)
+        C = fdist_fg.N()
+        D = fdist_bg.N()
+        N = C + D
+        # Compute the Log-Likelihood stepwise
+        E1 = (C * (A + B)) / N
+        E2 = (D * (A + B)) / N
+        # log2_AE1 = log(A / E1, 2)
+        # log2_BE2 = log(B / E2, 2)
+        ll = 2 * (
+            (
+                ((A * (log(A / E1, 2))) if (A > 0) else 0) 
+                + ((B * log(B / E2, 2)) if (B > 0) else 0)
+            )
+        )
+        logging.info(
+            "compute_LL: noError (A:" + str(A) 
+            +", B:"+ str(B)
+            +", C:"+ str(C)
+            +", D:"+ str(D)
+            +", N:"+ str(N)
+            +")"
+        )
+        return ll
+    # In cases where the computation of the LL score is not possible, 
+    # return the negative of the largest representable number as the LL score
+    # This guarantees  that these phrases will be at the end of the sorted list
     except ValueError:
-        log2_AE1 = 0
-    try:
-        log2_BE2 = log(B / E2, 2)
-    except ValueError:
-        log2_BE2 = 0
-    ll = 2 * (A * log2_AE1 + B * log2_BE2)
-    logging.info(
-        "compute_LL: noError (A:" + str(A)
-        +", B:"+ str(B)
-        +", C:"+ str(C)
-        +", D:"+ str(D)
-        +", N:"+ str(N)
-        +")"
-    )
-    return ll
+        logging.error(
+            "compute_LL: ValueError (A:" + str(A)
+            +", B:"+ str(B)
+            +", C:"+ str(C)
+            +", D:"+ str(D)
+            +", N:"+ str(N)
+            +")"
+        )
+        return - sys.maxsize
+    except Exception:
+        logging.critical(
+            "compute_LL: unknownError (A:" + str(A) 
+            +", B:"+ str(B) 
+            +", C:"+ str(C)
+            +", D:"+ str(D) 
+            +", N:"+ str(N) 
+            +")"
+        )
+        exit()
 
 # Function which takes two a foreground and a background frequency 
 # distribution and prints the 10 words from the foreground frequency
@@ -48,7 +65,7 @@ def print_10mostImprobableBigrams(fdist_fg, fdist_bg):
     # Create empty list to store the LL score for every 
     # bigram
     SIPs = []
-    # Iterate over all bigrams in the frequency distribution
+    # Iterate over all bigrams in the frequency distribution 
     for bigram in fdist_fg.keys():
         # Calculate the LL score for the current bigram and store 
         # as a tuple together with the bigram itself
@@ -65,30 +82,31 @@ def print_10mostImprobableBigrams(fdist_fg, fdist_bg):
             break
         print(
             "( "+ spi[0][0] +" "+ spi[0][1]
-            +" )\t\t\tLL: "+ str(spi[1])
+            +" )\t\t LL: "+ str(spi[1])
         )
 
-def cleanText(text):
-    for token in text:
-        if token in string.punctuation \
-                or token[0] in string.punctuation \
-                or token.lower() in nltk.corpus.stopwords.words('english'):
-            text.remove(token)
-    return text
 
 if __name__ == "__main__":
-    logging.basicConfig(level = logging.CRITICAL)
+    logging.basicConfig(level = logging.ERROR)
 
-    text_fg = list(nltk.corpus.gutenberg.words("carroll-alice.txt"))
-    text_fg = cleanText(text_fg)
+    text_fg = [
+        t.lower() for t in nltk.corpus.gutenberg.words("carroll-alice.txt")
+        if not (
+            t in nltk.corpus.stopwords.words('english') 
+            or t[0] in string.punctuation
+        )
+    ]
     bigrams_fg = list(nltk.bigrams(text_fg))
     fdist_bigrams_fg = nltk.FreqDist(bigrams_fg)
 
-    text_bg = list(nltk.corpus.brown.words())
-    text_bg = cleanText(text_bg)
+    text_bg = [
+        t.lower() for t in nltk.corpus.brown.words()
+        if not (
+            t in nltk.corpus.stopwords.words('english') 
+            or t[0] in string.punctuation
+        )
+    ]
     bigrams_bg = list(nltk.bigrams(text_bg))
     fdist_bigrams_bg = nltk.FreqDist(bigrams_bg)
 
     print_10mostImprobableBigrams(fdist_bigrams_fg, fdist_bigrams_bg)
-
-
