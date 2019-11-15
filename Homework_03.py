@@ -368,7 +368,7 @@ if __name__ == '__main__':
         'high in the scoring scheme used here, and low for all incorrect '
         'languages. As visible above, the language guesser based on token '
         'bigrams works less well, as most bigrams from the texts to be '
-        'guessed to not appear in the text used to generate the cdfs. '
+        'guessed do not appear in the text used to generate the cdfs. '
         'Hence, a larger "training corpus" to generate the cdfs would '
         'be needed. Character bigrams seem to work well, too. '
     )
