@@ -88,7 +88,8 @@ if __name__ == '__main__':
         'ranks from the similarity scores without giving elements '
         'with the same score the same rank. However, the ranking of '
         'elements with the same score is only based on the input '
-        'order, which is the correct order. Hence, it is biased. \n'
+        'order, which is the correct order. Hence, there is bias and '
+        'the use of the correct order would produce misleading results. \n'
     )
     
     # Homework 5.2
