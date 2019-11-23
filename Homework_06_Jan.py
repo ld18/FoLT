@@ -13,16 +13,10 @@ def get_t9_word(digits, freq_dist):
         '9' : '[wxyz]'
     }
     
-    regex = ''.join(
-        ['^']
-        + [digit_to_re[digit] for digit in digits]
-        + ['$']
-    )
-    
+    regex = "^"+ "".join([digit_to_re[digit] for digit in digits]) +"$"
+
     best_match = ''
-    
     best_freq = 0
-    
     for key, value in freq_dist.items():
         if re.search(regex, key):
             if freq_dist[key] > best_freq:
@@ -49,11 +43,9 @@ related to chat communication(informal, short, dialogous).
 The name "Peter" was not contained in the chat corpus, so we 
 added the names corpus.'''
     )
-    print('\n')
-    print('(b)')
+    print('\n(b)')
     print('252473 -->', get_t9_word('252473', fd))
-    print('\n')
-    print('(c)')
+    print('\n(c)')
     print('Translation:')
     print([get_t9_word(digits, fd) for digits in sent])
     print(
