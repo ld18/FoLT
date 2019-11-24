@@ -12,25 +12,24 @@ def get_t9_word(digits, freq_dist):
         '8' : '[tuv]',
         '9' : '[wxyz]'
     }
-    
     regex = "^"+ "".join([digit_to_re[digit] for digit in digits]) +"$"
-
     best_match = ''
     best_freq = 0
-    for key, value in freq_dist.items():
+    #ConditionalFreqDist allows us to just search for words with the matching word lenght
+    number_digits = len(digits)
+    for key, value in freq_dist[number_digits].items():
         if re.search(regex, key):
-            if freq_dist[key] > best_freq:
+            if freq_dist[number_digits][key] > best_freq:
                 best_match = key
-                best_freq = freq_dist[key]
-                
+                best_freq = freq_dist[number_digits][key]
     return best_match
     
 words = (
     [w.lower() for w in nltk.corpus.nps_chat.words()] 
      + [w.lower() for w in nltk.corpus.names.words()]
-)       
-
-fd = nltk.probability.FreqDist(words)
+)
+#ConditionalFreqDist is used for better performance
+fd = nltk.probability.ConditionalFreqDist((len(word), word) for word in words)
 
 if __name__ == '__main__':
     sent = ['43556','73837','4','26','3463']
