@@ -124,5 +124,5 @@ dmypy.json
 .pyre/
 
 # specific folders
-/Jan_scratch
-/.idea
+Jan_scratch/
+.idea/
