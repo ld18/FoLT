@@ -125,3 +125,4 @@ dmypy.json
 
 # specific folders
 /Jan_scratch
+/.idea
