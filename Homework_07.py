@@ -109,8 +109,9 @@ if __name__ == '__main__':
     print(get_tagged_with(tagged_words, ['NNS', 'VBZ']))
 
     print("\n(c) Identify three-word prepositional phrases of the form ADP + DET + NOUN (eg. 'at the end').")
-    sepTaged_tokens = findAndAllByTagSeq(taged_tokens, ["RB", "DT", "NN"])
-    print(sepTaged_tokens)
+    univ_tagged_tokens = nltk.corpus.brown.tagged_words(tagset='universal')
+    sepTaged_tokens = findAndAllByTagSeq(univ_tagged_tokens, ["ADP", "DET", "NOUN"])
+    print(len(sepTaged_tokens))
 
     # (d)
     print('(d)')
