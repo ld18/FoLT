@@ -35,20 +35,23 @@ class Chat_Tagger():
     # Training of tagger happens in initialization
     # The tagger is a simple nltk trigram tagger
     def __init__(self, train_posts):
-        self.t1 = nltk.UnigramTagger(train_posts)
-        self.t2 = nltk.BigramTagger(train_posts, backoff=self.t1)
-        self.t3 = nltk.TrigramTagger(train_posts, backoff=self.t2)
-
         patterns = [
+            (r'^[0-9]*$', 'NUM'),
+            (r'^[S|s]{1}ock[s]{0,1}$', 'NOUN'),
+            (r'^[<>]+$', 'X'),
             (r'^:-*[()P*oD]$', 'X'),
             (r'^l+o+l+$', 'X'),
             (r'^r+o+f+l+$', 'X')
         ]
+        self.t1 = nltk.UnigramTagger(train_posts)
+        self.t2 = nltk.BigramTagger(train_posts, backoff=self.t1)
+        self.t3 = nltk.TrigramTagger(train_posts, backoff=self.t2)
         self.rt = nltk.RegexpTagger(patterns, backoff=self.t3)
+        self.mostWrongTaggedWords = nltk.ConditionalFreqDist()
 
     # Function to tag a single sentence / post
     def tag(self, post):
-        return self.t3.tag(post)
+        return self.rt.tag(post)
 
     # Function to tag a list of posts
     def batch_tag(self, posts):
@@ -61,10 +64,14 @@ class Chat_Tagger():
     # Function to get the tagging accuracy in percent of a single tagged
     # sentence and its gold standard
     def get_accuracy(self, gold_post, tagged_post):
-        return sum([
-            1 if gold_post[i][1] == tagged_post[i][1] else 0
-            for i in range(len(gold_post))
-        ])/(len(gold_post)*0.01)
+        sum = 0
+        for i in range(len(gold_post)):
+            if gold_post [i] [1] == tagged_post [i] [1]:
+                sum +=1
+            else:
+                logger.debug("Wrong tag: "+ str(gold_post [i] [0]) +" as\t\t"+ str(tagged_post [i] [1]) +" but \t"+ str(gold_post [i] [1]))
+                self.mostWrongTaggedWords[str(gold_post [i] [0])][str(tagged_post [i] [1]) +" _ "+ str(gold_post [i] [1])] += 1
+        return sum /(len(gold_post)*0.01)
 
     # Function to get the tagging accuracy from a list of tagged
     # sentences
@@ -103,9 +110,6 @@ if __name__ == '__main__':
     # Get complete set of tagged chat posts
     tagged_posts = nltk.corpus.nps_chat.tagged_posts(tagset='universal')
 
-    # Get tagged sentences from the Brown corpus
-    tagged_sents = nltk.corpus.brown.tagged_sents(tagset='universal')
-
     # Preprocess the training and test data
     # Get frequency distributions of words
     chat_fd = nltk.probability.FreqDist(
@@ -121,6 +125,7 @@ if __name__ == '__main__':
 
     # Define regex patterns to keep
     keep_regexp = [
+        r'^[0-9]*$',
         r'^:-*[()P*oD]$',
         r'^l+o+l+$',
         r'^r+o+f+l+$'
@@ -154,3 +159,13 @@ if __name__ == '__main__':
 
     # Evaluate tagger
     print(tagger.evaluate(development_posts))
+
+    #The following shows what words got tagged wrong, how often they occure, how often they got mistagged and what would be the right tag.
+    #This enables a manual tuning of the algorithem. The word which occured often and get often mistagged are easy to tag by the regex tagger.
+    #This is done for example with the word "sock".
+    print("Show wrong tagged word:")
+    for conditional in tagger.mostWrongTaggedWords.conditions():
+        print(conditional)
+        print("\t", "Word total count", chat_fd[conditional])
+        print("\t", "Wrong tagged count", tagger.mostWrongTaggedWords[conditional].N())
+        print("\t", "Two most common wrong tag", tagger.mostWrongTaggedWords[conditional].most_common(1))
