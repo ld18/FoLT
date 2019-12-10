@@ -113,7 +113,7 @@ if __name__ == '__main__':
     )
 
     # Get the most frequent words
-    most_freq_X = 1000
+    most_freq_X = 2000
     chat_most_freq = [
         t[0] for t in chat_fd.most_common(most_freq_X)
     ]
