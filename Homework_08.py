@@ -144,6 +144,11 @@ if __name__ == '__main__':
 
     logger.info('Completed word replacement')
 
+    # Update chat_fd
+    chat_fd = nltk.probability.FreqDist(
+        [token[0] for post in tagged_posts for token in post]
+    )
+
     # Get the total number of tagged posts
     nr_posts = len(tagged_posts)
 
