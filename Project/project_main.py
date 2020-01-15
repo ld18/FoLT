@@ -1,20 +1,18 @@
 
 import logging
-from Project.DataManager import readDatapointsFromFile
+from Project.DataManager import *
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
-    level=logging.WARNING,
-    format=('%(asctime)s : %(levelname)s : '
-            '%(module)s : %(funcName)s : %(message)s'),
+    level=logging.INFO,
+    format=('%(asctime)s : %(levelname)s : %(module)s : %(funcName)s : %(message)s'),
     datefmt='%H:%M:%S'
 )
 logger.info('Starting program')
 
-logger.info('Read all datapoints from file in')
-allDatapoints, header, lineCount = readDatapointsFromFile("src/train.tsv")
-logger.info(str(lineCount) + " Datapoints found")
-print(header)
-print(lineCount)
-for datapoint in allDatapoints:
-    print(datapoint)
+path = "src/train.tsv"
+allDatapoints, header, lineCount = readDatapointsFromFile(path)
+logger.info(str(lineCount) + f" Datapoints found inside {path}.")
+
+trainingSet, developmentSet = splitDataSet(allDatapoints)
+logger.info("Split data as following: "+ str(len(trainingSet)) + " in trainingSet, "+ str(len(developmentSet))+ " in developmentSet.")

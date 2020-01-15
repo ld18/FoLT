@@ -31,5 +31,11 @@ def readDatapointsFromFile(path):
             lineCount += 1
     return allDatapoints, header, lineCount
 
+def splitDataSet(datapoints):
+    sliceAt = int(len(datapoints) /3)
+    developmentSet = datapoints[:sliceAt]
+    trainingSet = datapoints[sliceAt:]
+    return trainingSet, developmentSet
+
 
 
