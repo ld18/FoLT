@@ -8,11 +8,11 @@ logging.basicConfig(
     format=('%(asctime)s : %(levelname)s : %(module)s : %(funcName)s : %(message)s'),
     datefmt='%H:%M:%S'
 )
-logger.info('Starting program')
+logger.info("Started program.")
 
 path = "src/train.tsv"
-allDatapoints, header, lineCount = readDatapointsFromFile(path)
-logger.info(str(lineCount) + f" Datapoints found inside {path}.")
+datapoints, header, numberOfPoints = readDatapointsFromFile(path)
+logger.info(str(numberOfPoints) + f" Datapoints found inside {path}.")
 
-trainingSet, developmentSet = splitDataSet(allDatapoints)
-logger.info("Split data as following: "+ str(len(trainingSet)) + " in trainingSet, "+ str(len(developmentSet))+ " in developmentSet.")
+trainingSet, developmentSet = splitDataSet(datapoints)
+logger.info("Split data as following: "+ str(len(trainingSet)) + " for training, "+ str(len(developmentSet))+ " for development.")
