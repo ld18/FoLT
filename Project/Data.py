@@ -26,7 +26,7 @@ def readDatapointsFromFile(path):
             header = ", ".join(row)
             count += 1
         else:
-            datapoints.append(Datapoint(row[0], row[1], row[2], row[3]))
+            datapoints.append(Datapoint(int(row[0]), row[1], int(row[2]), int(row[3])))
             count += 1
     return datapoints, header, count
 
