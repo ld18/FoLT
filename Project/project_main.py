@@ -1,6 +1,7 @@
 
 import logging
 import Project.Data as Data
+import Project.Features as Features
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -16,3 +17,11 @@ logger.info(str(numberOfPoints) + f" Datapoints found inside {path}.")
 
 trainingSet, developmentSet = Data.splitDataSet(datapoints)
 logger.info("Split data as following: "+ str(len(trainingSet)) + " for training, "+ str(len(developmentSet))+ " for development.")
+
+
+for point in trainingSet:
+    print(point)
+    print("\t", Features.getMostCommonWords(point.comment_text))
+    print("\t", Features.getMostCommonWordsCleaned(point.comment_text))
+    print("\t", Features.getPortionOfCapitalWords(point.comment_text))
+    print("\t", Features.getPortionOfPunctuations(point.comment_text))
