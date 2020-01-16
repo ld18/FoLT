@@ -1,11 +1,17 @@
 
 class Classifier():
-    def __init__(self, methode):
-        pass
-    def train(self, goldenDataset):
-        pass
+    def __init__(self, classifier, featureExtractor):
+        self.classifier = classifier
+        self.featureMethode = featureExtractor
+    def train(self, dataset):
+        for datapoint in dataset:
+            features = self.featureExtractor(datapoint)
+            self.classifier.train(features, datapoint.toxicity)
     def predict(self, dataset):
-        pass
+        for datapoint in dataset:
+            features = self.featureExtractor(datapoint)
+            datapoint.toxicity_predicted = self.classifier.predict(features)
+        #Dataset must be returned or used as ref, idk yet
 
 
 def calculateAccuracy(dataset):
