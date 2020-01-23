@@ -36,6 +36,3 @@ def splitDataSet(datapoints):
     developmentSet = datapoints[:sliceAt]
     trainingSet = datapoints[sliceAt:]
     return trainingSet, developmentSet
-
-
-

@@ -15,10 +15,8 @@ if __name__ == '__main__':
     path = "src/train.tsv"
     datapoints, header, numberOfPoints = Data.readDatapointsFromFile(path)
     logger.info(str(numberOfPoints) + f" Datapoints found inside {path}.")
-
     trainingSet, developmentSet = Data.splitDataSet(datapoints)
-    logger.info("Split data as following: "+ str(len(trainingSet)) + " for training, "+ str(len(developmentSet))+ " for development.")
-
+    logger.info(f"Split data as following: {len(trainingSet)} for training, {len(developmentSet)} for development.")
 
     if True:
         for point in trainingSet:

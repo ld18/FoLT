@@ -2,7 +2,7 @@
 class Classifier():
     def __init__(self, classifier, featureExtractor):
         self.classifier = classifier
-        self.featureMethode = featureExtractor
+        self.featureExtractor = featureExtractor
     def train(self, dataset):
         for datapoint in dataset:
             features = self.featureExtractor(datapoint)
