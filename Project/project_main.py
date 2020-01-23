@@ -1,7 +1,7 @@
 
 import logging
-import Project.Data as Data
-import Project.Features as Features
+import Features
+import Data
 
 if __name__ == '__main__':
     logger = logging.getLogger(__name__)
@@ -19,9 +19,16 @@ if __name__ == '__main__':
     logger.info(f"Split data as following: {len(trainingSet)} for training, {len(developmentSet)} for development.")
 
     if True:
+        feature_list = [
+            Features.getMostCommonWords,
+            Features.getMostCommonWordsCleaned,
+            Features.getPortionOfCapitalWords,
+            Features.getPortionOfPunctuations
+        ]
         for point in trainingSet:
             print(point)
-            print("\t", Features.getMostCommonWords(point.comment_text))
-            print("\t", Features.getMostCommonWordsCleaned(point.comment_text))
-            print("\t", Features.getPortionOfCapitalWords(point.comment_text))
-            print("\t", Features.getPortionOfPunctuations(point.comment_text))
+            print("\t", Features.getFeatures(point.comment_text, feature_list))
+            # print("\t", Features.getMostCommonWords(point.comment_text))
+            # print("\t", Features.getMostCommonWordsCleaned(point.comment_text))
+            # print("\t", Features.getPortionOfCapitalWords(point.comment_text))
+            # print("\t", Features.getPortionOfPunctuations(point.comment_text))
