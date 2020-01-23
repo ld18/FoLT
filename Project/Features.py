@@ -9,7 +9,7 @@ def getFeatures(text, feature_list, **kwargs):
     features = {}
 
     for feature_function in feature_list:
-        features.update(feature_function(text, kwargs))
+        features.update(feature_function(text, **kwargs))
 
     return features
 
