@@ -10,7 +10,7 @@ class Classifier():
     def predict(self, dataset):
         for datapoint in dataset:
             features = self.featureExtractor(datapoint)
-            datapoint.toxicity_predicted = self.classifier.predict(features)
+            datapoint.toxicity_predicted = self.classifier.classify(features)
         #Dataset must be returned or used as ref, idk yet
 
 
