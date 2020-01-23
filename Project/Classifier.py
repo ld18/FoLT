@@ -1,11 +1,6 @@
 import logging
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.DEBUG,
-    format=('%(asctime)s : %(levelname)s : %(module)s : %(funcName)s : %(message)s'),
-    datefmt='%H:%M:%S'
-)
 
 class Classifier():
     def __init__(self, classifier, featureExtractor, feature_list, **feature_args):
@@ -16,24 +11,25 @@ class Classifier():
         self.feature_args = feature_args
 
     def train(self, train_data):
-        # Initialize classifier with first datapoint
-        self.classifier = self.classifier.train([(
+        # Get all features from the training dataset
+        train_features = [
             self.featureExtractor(
-                train_data[0].comment_text,
-                self.feature_list,
-                **self.feature_args
-            ),
-            train_data[0].toxicity
-        )])
-
-        # Continue training with the rest of the datapoints
-        for i in range(1, len(train_data)):
-            features = self.featureExtractor(
                 train_data[i].comment_text,
                 self.feature_list,
                 **self.feature_args
             )
-            self.classifier.train([(features, train_data[i].toxicity)])
+            for i in range(len(train_data))
+        ]
+        self.classifier = self.classifier.train(
+            zip(
+                train_features,
+                [train_data[i].toxicity for i in range(len(train_data))]
+            )
+        )
+
+        logger.info('10 most informative features: {}'.format(
+            self.classifier.most_informative_features(10)
+        ))
 
     def predict(self, test_data):
         for datapoint in test_data:
