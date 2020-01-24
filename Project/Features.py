@@ -63,6 +63,25 @@ def getUnigramFeatures(text, **kwargs):
             for word in words
         }
 
+# Function to extract a feature which is 1 if a text contains more than
+# x words and 0 if a text contains less than x words
+def moreThanxWords(text, **kwargs):
+    x = kwargs['num_words_threshold']
+    if len(nltk.tokenize.word_tokenize(text)) > x:
+        return {f'more_than_{x}_words' : 1}
+
+    else:
+        return {f'more_than_{x}_words' : 0}
+
+def punctuationHigherThanx(text, **kwargs):
+    x = kwargs['punctuation_threshold']
+    portion_of_punctuation = getPortionOfPunctuations(text)['PortionOfPunctuation']
+    if portion_of_punctuation > x:
+        return {f'punctuation_higher_than_{x:.4f}' : 1}
+
+    else:
+        return {f'punctuation_higher_than_{x:.4f}' : 0}
+
 # Function which takes a set s and returns a set of tuples of all combinations
 # of the elements in s
 def getAllCombinations(s, combinations):
