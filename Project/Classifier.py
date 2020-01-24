@@ -1,4 +1,5 @@
 import logging
+import Features
 
 logger = logging.getLogger(__name__)
 
@@ -53,3 +54,33 @@ def calculateAccuracy(dataset):
         if datapoint.toxicity != datapoint.toxicity_predicted:
             wrongPredictions +=1
     return (len(dataset) - wrongPredictions) / len(dataset)
+
+def testFeatureCombinations(train_data, test_data, classifier_base, features, **feature_args):
+    combinations = list(Features.getAllCombinations(set(features), set()))
+
+    accuracy_results = []
+
+    best_accuracy = 0
+
+    best_feature_combination = tuple()
+
+    for feature_tuple in combinations:
+        classifier = Classifier(
+            classifier_base,
+            Features.getFeatures,
+            feature_tuple
+        )
+
+        classifier.train(train_data)
+
+        accuracy = calculateAccuracy(classifier.predict(test_data))
+
+        accuracy_results.append(accuracy)
+
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            best_feature_combination = feature_tuple
+
+    print('Best Accuracy: {:.2f},'.format(best_accuracy), 'Best features: ', best_feature_combination)
+
+    return (best_accuracy, best_feature_combination), zip(accuracy_results, combinations)
