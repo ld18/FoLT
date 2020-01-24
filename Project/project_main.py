@@ -5,18 +5,6 @@ import Data
 import Classifier
 import nltk
 
-# Function which takes a set s and returns a set of tuples of all combinations
-# of the elements in s
-def getAllCombinations(s, combinations):
-
-    if len(s) > 1:
-        for elem in s:
-            combinations.update(getAllCombinations(s-{elem}, combinations))
-
-    combinations.add(tuple(s))
-    return combinations
-
-
 if __name__ == '__main__':
     logger = logging.getLogger(__name__)
     logging.basicConfig(
@@ -33,20 +21,24 @@ if __name__ == '__main__':
     logger.info(f"Split data as following: {len(trainingSet)} for training, {len(developmentSet)} for development.")
 
     feature_list = [
-        Features.getUnigramFeatures
+        Features.getMostCommonWords,
+        Features.getMostCommonWordsCleaned,
+        Features.getPortionOfCapitalWords,
+        Features.getPortionOfPunctuations,
+        Features.getUnigramFeatures,
     ]
 
     NBC = nltk.classify.NaiveBayesClassifier
 
-    classifier = Classifier.Classifier(
-        NBC,
-        Features.getFeatures,
-        feature_list
+    best_result, results = Classifier.testFeatureCombinations(
+        trainingSet, developmentSet, NBC, feature_list
     )
 
-    classifier.train(trainingSet)
-
-    print(Classifier.calculateAccuracy(classifier.predict(developmentSet)))
+    for accuracy, feature_combination in results:
+        print(
+            'Accuracy: {:.2f}'.format(accuracy),
+            'Features: ', [str(feature).split()[1] for feature in feature_combination]
+        )
 
     # if True:
     #     feature_list = [
