@@ -62,3 +62,14 @@ def getUnigramFeatures(text, **kwargs):
             word : 1
             for word in words
         }
+
+# Function which takes a set s and returns a set of tuples of all combinations
+# of the elements in s
+def getAllCombinations(s, combinations):
+
+    if len(s) > 1:
+        for elem in s:
+            combinations.update(getAllCombinations(s-{elem}, combinations))
+
+    combinations.add(tuple(s))
+    return combinations
