@@ -25,18 +25,46 @@ if __name__ == '__main__':
     trainingSet, developmentSet = Data.splitDataSet(datapoints)
     logger.info(f"Split data as following: {len(trainingSet)} for training, {len(developmentSet)} for development.")
 
+    # Get most informative unigram features
+    unigram_classifier = nltk.classify.NaiveBayesClassifier.train(zip(
+        [
+            Features.getUnigramFeatures(
+                datapoint.comment_text
+            )
+            for datapoint in datapoints
+        ],
+        [
+            datapoint.toxicity for datapoint in datapoints
+        ]
+    ))
+
+    print(unigram_classifier.most_informative_features(10))
+
+    most_informative_unigrams = [
+        w for w, _ in unigram_classifier.most_informative_features(9000)
+    ]
+
+    # Define features
     feature_list = [
         Features.getMostCommonWords,
         Features.getMostCommonWordsCleaned,
         Features.getPortionOfCapitalWords,
         Features.getPortionOfPunctuations,
         Features.getUnigramFeatures,
+        Features.moreThanxWords,
+        Features.punctuationHigherThanx
     ]
 
     NBC = nltk.classify.NaiveBayesClassifier
 
     best_result, results = Classifier.testFeatureCombinations(
-        trainingSet, developmentSet, NBC, feature_list
+        trainingSet,
+        developmentSet,
+        NBC,
+        feature_list,
+        include_unigrams = most_informative_unigrams,
+        num_words_threshold = 71,
+        punctuation_threshold = 0.03685
     )
 
     for accuracy, feature_combination in results:
