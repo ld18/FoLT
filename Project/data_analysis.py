@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
     print(f'Average number of words in non-toxic texts: {avg_n_words_non_toxic:.2f}')
 
-    # Get average portion of punctuation symbols (0.0391)
+    # Get average portion of punctuation symbols
     avg_portion_punctuation_toxic = sum([
         Features.getPortionOfPunctuations(datapoint.comment_text)['PortionOfPunctuation']
         for datapoint in datapoints
