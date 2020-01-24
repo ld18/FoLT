@@ -4,6 +4,7 @@ import Features
 import Data
 import Classifier
 import nltk
+import random
 
 if __name__ == '__main__':
     logger = logging.getLogger(__name__)
@@ -17,6 +18,10 @@ if __name__ == '__main__':
     path = "src/train.tsv"
     datapoints, header, numberOfPoints = Data.readDatapointsFromFile(path)
     logger.info(str(numberOfPoints) + f" Datapoints found inside {path}.")
+
+    # Shuffle dataset
+    random.Random(1234).shuffle(datapoints)
+
     trainingSet, developmentSet = Data.splitDataSet(datapoints)
     logger.info(f"Split data as following: {len(trainingSet)} for training, {len(developmentSet)} for development.")
 
