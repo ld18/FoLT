@@ -85,7 +85,8 @@ def testFeatureCombinations(train_data, test_data, classifier_base, features, **
         classifier = Classifier(
             classifier_base,
             Features.getFeatures,
-            feature_tuple
+            feature_tuple,
+            **feature_args
         )
         # Train
         classifier.train(train_data)
