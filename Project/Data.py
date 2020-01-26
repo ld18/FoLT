@@ -36,3 +36,33 @@ def splitDataSet(datapoints):
     developmentSet = datapoints[:sliceAt]
     trainingSet = datapoints[sliceAt:]
     return trainingSet, developmentSet
+
+# Function to read word pairs from supplementary of Lu et al, 2018 into a list
+# of tuples
+def readWordPairData():
+    filepath = './src/gendered_word_pairs_Lu_2018'
+
+    with open(filepath, 'r') as file:
+        content = file.readlines()
+
+    word_pairs = []
+
+    for line in content:
+        split_1 = line.split(' - ')
+        word_pairs.append(tuple((split_1[0], split_1[1].split()[0])))
+        for i in range(1, len(split_1) - 1):
+            word_pairs.append(tuple((
+                split_1[i].split()[1],
+                split_1[i+1].split()[0]
+            )))
+
+    return word_pairs
+
+# Function to make a two-way dictionary from a list of tuples
+def makeExchangeDict(word_pairs):
+    exchange_dict = {}
+    for pair in word_pairs:
+        exchange_dict[pair[0]] = pair[1]
+        exchange_dict[pair[1]] = pair[0]
+
+    return exchange_dict
