@@ -18,3 +18,12 @@ Test Data
 ----------------------------------------
 
 The (later published) test data has essentially the same format as the training data, but only contains the attributes 'id' and 'comment_text'.
+
+========================================
+
+
+gendered_word_pairs_Lu_2018
+----------------------------------------
+
+List of gendered word pairs (e.g. 'he' - 'she') from Supplementary of Lu et al, 2018
+Can be used for data augmentation.
