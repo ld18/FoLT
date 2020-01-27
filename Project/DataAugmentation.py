@@ -26,7 +26,7 @@ def exchangeByDict(pos_tagged_words, **kwargs):
 
     for word, pos_tag in pos_tagged_words:
         if word.lower() in kwargs['exchange_dict']:
-            new_pos_tagged_words.append(tuple((kwargs['exchange_dict'][word], pos_tag)))
+            new_pos_tagged_words.append(tuple((kwargs['exchange_dict'][word.lower()], pos_tag)))
 
         else:
             new_pos_tagged_words.append(tuple((word, pos_tag)))
@@ -37,7 +37,7 @@ def exchangeByDict(pos_tagged_words, **kwargs):
 # E.g. replace 'her' with 'him' or 'his' depending on pos-tag
 def exchangeTagSensitive(pos_tagged_words, **kwargs):
     # Add 'her'-'him'/'his' replacement to exchange_dict
-    kwargs['exchange_dict'].update({
+    kwargs['exchange_dict_ts'].update({
         ('her', 'PRP') : ('him', 'PRP'),
         ('him', 'PRP') : ('her', 'PRP'),
         ('her', 'PRP$') : ('his', 'PRP$'),
@@ -47,11 +47,11 @@ def exchangeTagSensitive(pos_tagged_words, **kwargs):
 
     new_pos_tagged_words = []
 
-    for pos_tagged_word in pos_tagged_words:
-        if pos_tagged_word in kwargs['exchange_dict']:
-            new_pos_tagged_words.append(kwargs['exchange_dict'][pos_tagged_word])
+    for word, pos_tag in pos_tagged_words:
+        if (word.lower(), pos_tag) in kwargs['exchange_dict_ts']:
+            new_pos_tagged_words.append(kwargs['exchange_dict_ts'][(word.lower(), pos_tag)])
 
         else:
-            new_pos_tagged_words.append(pos_tagged_word)
+            new_pos_tagged_words.append((word, pos_tag))
 
     return new_pos_tagged_words
