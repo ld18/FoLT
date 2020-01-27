@@ -3,13 +3,14 @@ import logging
 import Features
 import Data
 import Classifier
+import DataAugmentation
 import nltk
 import random
 
 if __name__ == '__main__':
     logger = logging.getLogger(__name__)
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.DEBUG,
         format=('%(asctime)s : %(levelname)s : %(module)s : %(funcName)s : %(message)s'),
         datefmt='%H:%M:%S'
     )
@@ -46,17 +47,13 @@ if __name__ == '__main__':
 
     # Define features
     feature_list = [
-        Features.getMostCommonWords,
-        Features.getMostCommonWordsCleaned,
-        Features.getPortionOfCapitalWords,
-        Features.getPortionOfPunctuations,
-        Features.getUnigramFeatures,
-        Features.moreThanxWords,
-        Features.punctuationHigherThanx
+        Features.getMostCommonWordsCleaned
     ]
 
+    # Uninitialized classifier
     NBC = nltk.classify.NaiveBayesClassifier
 
+    # Try all combinations of features to get the best
     best_result, results = Classifier.testFeatureCombinations(
         trainingSet,
         developmentSet,
@@ -66,12 +63,69 @@ if __name__ == '__main__':
         num_words_threshold = 71,
         punctuation_threshold = 0.03685
     )
+    # Currently Best combination: getMostCommonWordsCleaned, getUnigramFeatures,
+    # moreThanxWords
 
+    # Print the results
     for accuracy, feature_combination in results:
         print(
             'Accuracy: {:.2f}'.format(accuracy),
             'Features: ', [str(feature).split()[1] for feature in feature_combination]
         )
+
+    # Augment the training data
+    # Define Functions for augmentation
+    augment_functions = [
+        DataAugmentation.exchangeByDict,
+        DataAugmentation.exchangeTagSensitive
+    ]
+
+    # Get exchange_dict
+    exchange_dict = Data.makeExchangeDict(Data.readWordPairData())
+
+    trainingSet_augmented = DataAugmentation.augmentDataset(
+        trainingSet,
+        augment_functions,
+        exchange_dict = exchange_dict,
+        exchange_dict_ts = {}
+    )
+
+    developmentSet_augmented = DataAugmentation.augmentDataset(
+        developmentSet,
+        augment_functions,
+        exchange_dict = exchange_dict,
+        exchange_dict_ts = {}
+    )
+    logger.debug(f'len(trainingSet_augmented[0].comment_text: {trainingSet_augmented[0].comment_text}')
+    logger.debug(f'len(trainingSet_augmented[1200].comment_text: {trainingSet_augmented[1200].comment_text}')
+
+    # Shuffle
+    random.Random(123).shuffle(developmentSet_augmented)
+    random.Random(123).shuffle(trainingSet_augmented)
+
+    # Get the best feature functions
+    best_feature_funcs = [
+        getattr(Features, str(func).split()[1])
+        for func in best_result[1]
+    ]
+
+    # Train the classifier on the augmented data using the best-performing
+    # features
+    classifier_augmented = Classifier.Classifier(
+        NBC,
+        Features.getFeatures,
+        best_feature_funcs,
+        include_unigrams=most_informative_unigrams,
+        num_words_threshold=71,
+        punctuation_threshold=0.03685
+    )
+
+    classifier_augmented.train(trainingSet_augmented)
+
+    print(
+        'Accuracy on development set with augmented data: ',
+        Classifier.calculateAccuracy(classifier_augmented.predict(developmentSet_augmented))
+    )
 
     # if True:
     #     feature_list = [
