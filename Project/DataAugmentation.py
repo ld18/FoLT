@@ -1,4 +1,22 @@
 import nltk
+import copy
+
+# Function which takes a dataset and returns an augmented and duplicated dataset
+def augmentDataset(dataset, augment_functions, **kwargs):
+    new_datapoints = []
+    for datapoint in dataset:
+        new_datapoint = copy.deepcopy(datapoint)
+
+        new_datapoint.comment_text = augmentDuplicate(
+            datapoint.comment_text,
+            augment_functions,
+            **kwargs
+        )
+
+        new_datapoints.append(new_datapoint)
+
+    return dataset + new_datapoints
+
 
 # Basic function to augment a given text using the functions given in
 # augment_functions
