@@ -127,6 +127,8 @@ if __name__ == '__main__':
         Classifier.calculateAccuracy(classifier_augmented.predict(developmentSet_augmented))
     )
 
+    Data.outputResults(developmentSet_augmented, './output_test')
+
     # if True:
     #     feature_list = [
     #         Features.getMostCommonWords,

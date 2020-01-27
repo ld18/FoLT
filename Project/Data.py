@@ -66,3 +66,11 @@ def makeExchangeDict(word_pairs):
         exchange_dict[pair[1]] = pair[0]
 
     return exchange_dict
+
+# Function to output results file for codalab submission
+def outputResults(datapoints, filepath):
+    with open(filepath, 'w') as file:
+        file.write('\n'.join([
+            f'{datapoint.id}_{datapoint.toxicity_predicted}'
+            for datapoint in datapoints
+        ]))
