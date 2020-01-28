@@ -14,7 +14,7 @@ class Datapoint:
               f"\n\t{self.toxicity}({self.toxicity_predicted})  {self.gender}\n"
         return str
 
-
+#Function to extract all datapoints from the file and saving them inside a Datapoint object
 def readDatapointsFromFile(path):
     count = -1
     header = ""
@@ -30,15 +30,14 @@ def readDatapointsFromFile(path):
             count += 1
     return datapoints, header, count
 
-
+#small function to split a daatset into two by dividing by three
 def splitDataSet(datapoints):
     sliceAt = int(len(datapoints) /3)
     developmentSet = datapoints[:sliceAt]
     trainingSet = datapoints[sliceAt:]
     return trainingSet, developmentSet
 
-# Function to read word pairs from supplementary of Lu et al, 2018 into a list
-# of tuples
+# Function to read word pairs from supplementary of Lu et al, 2018 into a list of tuples
 def readWordPairData():
     filepath = './src/gendered_word_pairs_Lu_2018'
 

@@ -15,7 +15,6 @@ def getFeatures(text, feature_list, **kwargs):
 
 # Functions to extract individual types of features
 # Use of kwargs argument ensures interoperability
-
 def getMostCommonWords(text, **kwargs):
     words = nltk.tokenize.word_tokenize(text)
     mostCommonWords = nltk.FreqDist(words).most_common(30)
@@ -56,14 +55,13 @@ def getUnigramFeatures(text, **kwargs):
                 word : (1 if word in words else 0)
                 for word in kwargs['include_unigrams']
             }
-
     else:
         return {
             word : 1
             for word in words
         }
 
-# Function to extract a feature which is 1 if a text contains more than
+# Function to create a feature which is 1 if a text contains more than
 # x words and 0 if a text contains less than x words
 def moreThanxWords(text, **kwargs):
     x = kwargs['num_words_threshold']
@@ -73,6 +71,8 @@ def moreThanxWords(text, **kwargs):
     else:
         return {f'more_than_{x}_words' : 0}
 
+# Function to create a feature which is 1 if a text contains more than
+# x Punctuation and 0 if a text contains less than x Punctuation in %
 def punctuationHigherThanx(text, **kwargs):
     x = kwargs['punctuation_threshold']
     portion_of_punctuation = getPortionOfPunctuations(text)['PortionOfPunctuation']

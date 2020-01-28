@@ -1,16 +1,16 @@
 
 import logging
-import Features
-import Data
-import Classifier
-import DataAugmentation
+import Project.Features as Features
+import Project.Data as Data
+import Project.Classifier as Classifier
+import Project.DataAugmentation as DataAugmentation
 import nltk
 import random
 
 if __name__ == '__main__':
     logger = logging.getLogger(__name__)
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         format=('%(asctime)s : %(levelname)s : %(module)s : %(funcName)s : %(message)s'),
         datefmt='%H:%M:%S'
     )
@@ -47,7 +47,12 @@ if __name__ == '__main__':
 
     # Define features
     feature_list = [
-        Features.getMostCommonWordsCleaned
+        Features.getMostCommonWords,
+        Features.getMostCommonWordsCleaned,
+        Features.getPortionOfCapitalWords,
+        Features.getPortionOfPunctuations,
+        Features.getUnigramFeatures,
+        Features.moreThanxWords,
     ]
 
     # Uninitialized classifier

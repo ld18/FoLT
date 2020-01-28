@@ -4,15 +4,15 @@ import Features
 logger = logging.getLogger(__name__)
 
 class Classifier():
+    #Save all needed functions and parameters for a costum classifier class
     def __init__(self, classifier, featureExtractor, feature_list, **feature_args):
-        # Here, classifier is  still uninitialized
         self.classifier = classifier
         self.featureExtractor = featureExtractor
         self.feature_list = feature_list
         self.feature_args = feature_args
 
+    #train classifier by first extracting the features from the dataset
     def train(self, train_data):
-        # Get all features from the training dataset
         train_features = [
             self.featureExtractor(
                 train_data[i].comment_text,
@@ -27,11 +27,11 @@ class Classifier():
                 [train_data[i].toxicity for i in range(len(train_data))]
             )
         )
-
         logger.info('10 most informative features: {}'.format(
             self.classifier.most_informative_features(10)
         ))
 
+    #predict a list of datapoints again by first extracting the features
     def predict(self, test_data):
         for datapoint in test_data:
             features = self.featureExtractor(
@@ -43,9 +43,8 @@ class Classifier():
             datapoint.toxicity_predicted = self.classifier.classify(features)
 
         return test_data
-        #Dataset must be returned or used as ref, idk yet
 
-
+#calculate the accuracy of the classifier by comapring hte predicted labels of a dataset to the real label
 def calculateAccuracy(dataset):
     wrongPredictions = 0
     for datapoint in dataset:
