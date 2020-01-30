@@ -22,12 +22,23 @@ def readDatapointsFromFile(path):
     csv_file = open(path, mode="r", encoding="utf_8")
     csv_reader = csv.reader(csv_file, delimiter="\t")
     for row in csv_reader:
+        # Check data read is train or test data (test data has fewer columns)
+        if len(row) == 4:
+            mode = 'train_data'
+        else:
+            mode = 'test_data'
+
         if count == -1:
             header = ", ".join(row)
             count += 1
         else:
-            datapoints.append(Datapoint(int(row[0]), row[1], int(row[2]), int(row[3])))
-            count += 1
+            if mode == 'train_data':
+                datapoints.append(Datapoint(int(row[0]), row[1], int(row[2]), int(row[3])))
+                count += 1
+
+            else:
+                datapoints.append(Datapoint(int(row[0]), row[1], None, None))
+                count += 1
     return datapoints, header, count
 
 #small function to split a daatset into two by dividing by three
