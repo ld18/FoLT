@@ -168,7 +168,7 @@ if __name__ == '__main__':
         Features.getFeatures,
         best_feature_funcs,
         include_unigrams=most_informative_unigrams,
-        num_words_threshold=71,
+        num_words_threshold=72,
         punctuation_threshold=0.03685
     )
 
