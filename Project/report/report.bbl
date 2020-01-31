@@ -1,10 +1,16 @@
-\begin{thebibliography}{3}
+\begin{thebibliography}{4}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Bird et~al.(2009)Bird, Loper, and Klein}]{nltkbook}
 Steven Bird, Edward Loper, and Ewan Klein. 2009.
 \newblock \emph{Natural Language Processing with Python}.
 \newblock O'Reilly Media Inc.
+
+\bibitem[{Lu et~al.(2018)Lu, Mardziel, Wu, Amancharla, and Datta}]{Lu2018}
+Kaiji Lu, Piotr Mardziel, Fangjing Wu, Preetam Amancharla, and Anupam Datta.
+  2018.
+\newblock \href {http://arxiv.org/abs/1807.11714} {{Gender Bias in Neural
+  Natural Language Processing}}.
 
 \bibitem[{Sahami et~al.(1998)Sahami, Dumais, Heckermann, and
   Horvitz}]{naivebayesspam}
