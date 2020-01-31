@@ -1,5 +1,8 @@
+import sys
+sys.path.append('..')
+
 import logging
-import Features
+import Project.Features as Features
 
 logger = logging.getLogger(__name__)
 
