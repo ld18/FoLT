@@ -1,0 +1,53 @@
+%
+% File acl2019.tex
+%
+%% Based on the style files for ACL 2018, NAACL 2018/19, which were
+%% Based on the style files for ACL-2015, with some improvements
+%%  taken from the NAACL-2016 style
+%% Based on the style files for ACL-2014, which were, in turn,
+%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
+%% EACL-2009, IJCNLP-2008...
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{acl2019}
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage{url}
+
+\aclfinalcopy
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+\newcommand\BibTeX{B\textsc{ib}\TeX}
+
+\title{FOLT Software Project}
+
+\author{Luis Dreher \And Jan Buchmann}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\section{Project Documentation}
+The 2019/20 FOLT software project consists of two tasks that work with the same data. This data is a set of comments from ``Wikipedia talk page edits'' \cite{taskdescription}. In these comments, Wikipedia users discuss edits of Wikipedia articles. The first task is a \textit{shared task}, in which the comments are to be classified as \textit{toxic} or \textit{non-toxic} based on the language used. The classification is evaluated with the \textit{accuracy} measure, which gives the proportion of correctly classified comments. \\
+For the classification, one of the classifiers provided in the natural language toolkit (NLTK) \citep{nltkbook} is to be used. We decided to use the naive Bayes classifier, as this is a well-established tool for this purpose. The most well-known application of naive Bayes classifiers in text classification is spam e-mail detection \cite{naivebayesspam}, which is a somewhat similar task to the one described here. \\
+In the training, the classifier is supposed to ``learn'' specific properties of the comments that distinguish toxic from non-toxic comments. These properties are often called \textit{features}, and the main challenge of this task was to select \\
+To train the classifier, a part of the data (the train split, consisting of 1800 comments) was provided with a \textit{toxicity} label for each comment. These labels had been obtained by human annotation. Inspection of the train data revealed that 877 comments were labeled as toxic and 923 were labeled as non-toxic. This means that the dataset is fairly balanced in terms of class distribution. A non-balanced class distribution can cause problems, because this might mean that there are not enough examples to learn informative features for some of the classes.
+
+\section{Results Analysis}
+
+\bibliography{acl2019}
+\bibliographystyle{acl_natbib}
+
+
+\end{document}

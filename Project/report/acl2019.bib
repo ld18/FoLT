@@ -1,0 +1,51 @@
+@article{HallMaudslay2019,
+abstract = {This paper treats gender bias latent in word embeddings. Previous mitigation attempts rely on the operationalisation of gender bias as a projection over a linear subspace. An alternative approach is Counterfactual Data Augmentation (CDA), in which a corpus is duplicated and augmented to remove bias, e.g. by swapping all inherently-gendered words in the copy. We perform an empirical comparison of these approaches on the English Gigaword and Wikipedia, and find that whilst both successfully reduce direct bias and perform well in tasks which quantify embedding quality, CDA variants outperform projection-based methods at the task of drawing non-biased gender analogies by an average of 19{\%} across both corpora. We propose two improvements to CDA: Counterfactual Data Substitution (CDS), a variant of CDA in which potentially biased text is randomly substituted to avoid duplication, and the Names Intervention, a novel name-pairing technique that vastly increases the number of words being treated. CDA/S with the Names Intervention is the only approach which is able to mitigate indirect gender bias: following debiasing, previously biased words are significantly less clustered according to gender (cluster purity is reduced by 49{\%}), thus improving on the state-of-the-art for bias mitigation.},
+archivePrefix = {arXiv},
+arxivId = {1909.00871},
+author = {{Hall Maudslay}, Rowan and Gonen, Hila and Cotterell, Ryan and Teufel, Simone},
+doi = {10.18653/v1/d19-1530},
+eprint = {1909.00871},
+file = {:C$\backslash$:/Users/Jan/Documents/Studium/WS19-20/FOLT/Project/maudslay{\_}2019{\_}counterfactual{\_}data{\_}substitution.pdf:pdf},
+number = {December},
+pages = {5266--5274},
+title = {{It's All in the Name: Mitigating Gender Bias with Name-Based Counterfactual Data Substitution}},
+volume = {2019},
+year = {2019}
+}
+@article{Lu2018,
+abstract = {We examine whether neural natural language processing (NLP) systems reflect historical biases in training data. We define a general benchmark to quantify gender bias in a variety of neural NLP tasks. Our empirical evaluation with state-of-the-art neural coreference resolution and textbook RNN-based language models trained on benchmark datasets finds significant gender bias in how models view occupations. We then mitigate bias with CDA: a generic methodology for corpus augmentation via causal interventions that breaks associations between gendered and gender-neutral words. We empirically show that CDA effectively decreases gender bias while preserving accuracy. We also explore the space of mitigation strategies with CDA, a prior approach to word embedding debiasing (WED), and their compositions. We show that CDA outperforms WED, drastically so when word embeddings are trained. For pre-trained embeddings, the two methods can be effectively composed. We also find that as training proceeds on the original data set with gradient descent the gender bias grows as the loss reduces, indicating that the optimization encourages bias; CDA mitigates this behavior.},
+archivePrefix = {arXiv},
+arxivId = {1807.11714},
+author = {Lu, Kaiji and Mardziel, Piotr and Wu, Fangjing and Amancharla, Preetam and Datta, Anupam},
+eprint = {1807.11714},
+file = {:C$\backslash$:/Users/Jan/Documents/Studium/WS19-20/FOLT/Project/Lu{\_}2018{\_}Gender{\_}Bias.pdf:pdf},
+title = {{Gender Bias in Neural Natural Language Processing}},
+url = {http://arxiv.org/abs/1807.11714},
+year = {2018}
+}
+@article{taskdescription,
+author = {{The FOLT 2019/20 Practice Class Organizers}},
+title = {{FOLT Software Project Task Description}},
+year = {2020}
+}
+@book{nltkbook,
+author = {Bird, Steven and Loper, Edward and Klein, Ewan},
+year = {2009},
+title = {Natural Language Processing with Python},
+publisher = {O'Reilly Media Inc.}
+}
+@inproceedings{naivebayesspam,
+author = {Sahami, M. and Dumais, S. and Heckermann, D. and Horvitz, E.},
+title = {A Bayesian Approach to Filtering Junk E-Mail},
+crossref = {textcatworkshop},
+pages = {98--105}
+}
+@proceedings{textcatworkshop,
+editor = {Sahami, Mehran},
+title = {Technical Report WS-98-05},
+booktitle = "Technical Report WS-98-05",
+publisher = {The AAAI Press},
+venue = {Menlo Park, California},
+year = {1998}
+}
+

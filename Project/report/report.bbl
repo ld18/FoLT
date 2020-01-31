@@ -1,0 +1,19 @@
+\begin{thebibliography}{3}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Bird et~al.(2009)Bird, Loper, and Klein}]{nltkbook}
+Steven Bird, Edward Loper, and Ewan Klein. 2009.
+\newblock \emph{Natural Language Processing with Python}.
+\newblock O'Reilly Media Inc.
+
+\bibitem[{Sahami et~al.(1998)Sahami, Dumais, Heckermann, and
+  Horvitz}]{naivebayesspam}
+M.~Sahami, S.~Dumais, D.~Heckermann, and E.~Horvitz. 1998.
+\newblock A bayesian approach to filtering junk e-mail.
+\newblock In \emph{Technical Report WS-98-05}, pages 98--105. The AAAI Press.
+
+\bibitem[{{The FOLT 2019/20 Practice Class Organizers}(2020)}]{taskdescription}
+{The FOLT 2019/20 Practice Class Organizers}. 2020.
+\newblock {FOLT Software Project Task Description}.
+
+\end{thebibliography}
