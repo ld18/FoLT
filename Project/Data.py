@@ -1,5 +1,7 @@
 
 import csv
+import nltk
+import os
 
 class Datapoint:
     def __init__(self, id, comment_text, toxicity, gender):
@@ -84,3 +86,32 @@ def outputResults(datapoints, filepath):
             f'{datapoint.id}_{datapoint.toxicity_predicted}'
             for datapoint in datapoints
         ]))
+
+# Function to read the names data, returns two frequency distributions
+# of male and female names with counts
+def read_names():
+    dir_path = 'src/names/'
+    male_names_fd = nltk.probability.FreqDist()
+    female_names_fd = nltk.probability.FreqDist()
+
+    for filename in os.listdir(dir_path):
+        if not '.pdf' in filename:
+            with open(dir_path + filename, mode='r', encoding="utf_8") as file:
+                for row in csv.reader(file, delimiter=","):
+                    if row[1] == 'M':
+                        male_names_fd[row[0].lower()] += int(row[2])
+
+                    else:
+                        female_names_fd[row[0].lower()] += int(row[2])
+
+    return male_names_fd, female_names_fd
+
+# Function to make a list of name pairs sorted by frequency
+def makePairsFromFDs(fd1, fd2):
+    list_fd1_sorted = sorted(list(fd1.items()), key = lambda x : x[1], reverse=True)
+    list_fd2_sorted = sorted(list(fd2.items()), key = lambda x : x[1], reverse=True)
+
+    return [
+        (pair1[0], pair2[0])
+        for pair1, pair2 in zip(list_fd1_sorted, list_fd2_sorted)
+    ]

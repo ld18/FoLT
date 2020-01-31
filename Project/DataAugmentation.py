@@ -73,3 +73,20 @@ def exchangeTagSensitive(pos_tagged_words, **kwargs):
             new_pos_tagged_words.append((word, pos_tag))
 
     return new_pos_tagged_words
+
+# Function to exchange names, not tested
+def exchangeNames(pos_tagged_words, **kwargs):
+    new_pos_tagged_words = []
+
+    for word, pos_tag in pos_tagged_words:
+        if pos_tag == 'NNP' and word.lower() in kwargs['names_dict']:
+            new_pos_tagged_words.append(
+                tuple((kwargs['names_dict'][word.lower()], pos_tag))
+            )
+
+        else:
+            new_pos_tagged_words.append(tuple(
+                word, pos_tag
+            ))
+
+    return new_pos_tagged_words
