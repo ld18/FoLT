@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../')
 
 import logging
 import Project.Features as Features
@@ -47,10 +49,7 @@ if __name__ == '__main__':
 
     # Define features
     feature_list = [
-        Features.getMostCommonWords,
         Features.getMostCommonWordsCleaned,
-        Features.getPortionOfCapitalWords,
-        Features.getPortionOfPunctuations,
         Features.getUnigramFeatures,
         Features.moreThanxWords,
     ]
@@ -133,6 +132,51 @@ if __name__ == '__main__':
     )
 
     Data.outputResults(developmentSet_augmented, './output_test')
+
+    # Test data evaluation
+    # Read the test data
+    testSet = Data.readDatapointsFromFile('src/test.tsv')[0]
+
+    # Train the classifier on the complete train data (train + dev)
+    classifier_full = Classifier.Classifier(
+        NBC,
+        Features.getFeatures,
+        best_feature_funcs,
+        include_unigrams=most_informative_unigrams,
+        num_words_threshold=71,
+        punctuation_threshold=0.03685
+    )
+
+    classifier_full.train(trainingSet + developmentSet)
+
+    classifier_full.predict(testSet)
+
+    Data.outputResults(testSet, './test_data_evaluation')
+
+
+    # Augment the test data
+    testSet_augmented = DataAugmentation.augmentDataset(
+        testSet,
+        augment_functions,
+        exchange_dict = exchange_dict,
+        exchange_dict_ts = {}
+    )
+
+    # Train a classifier on the complete augmented train dataset
+    classifier_full_augmented = Classifier.Classifier(
+        NBC,
+        Features.getFeatures,
+        best_feature_funcs,
+        include_unigrams=most_informative_unigrams,
+        num_words_threshold=71,
+        punctuation_threshold=0.03685
+    )
+
+    classifier_full_augmented.train(trainingSet_augmented + developmentSet_augmented)
+
+    classifier_full_augmented.predict(testSet_augmented)
+
+    Data.outputResults(testSet_augmented, './test_data_augmented_evaluation')
 
     # if True:
     #     feature_list = [
