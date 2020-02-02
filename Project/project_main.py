@@ -81,24 +81,36 @@ if __name__ == '__main__':
     # Define Functions for augmentation
     augment_functions = [
         DataAugmentation.exchangeByDict,
-        DataAugmentation.exchangeTagSensitive
+        DataAugmentation.exchangeTagSensitive,
+        DataAugmentation.exchangeNames
     ]
 
     # Get exchange_dict
     exchange_dict = Data.makeExchangeDict(Data.readWordPairData())
 
+    male_fd, female_fd = Data.read_names()
+
+    # Get names_dict
+    names_dict = Data.makeExchangeDict(
+        Data.makePairsFromFDs(
+            male_fd, female_fd
+        )
+    )
+
     trainingSet_augmented = DataAugmentation.augmentDataset(
         trainingSet,
         augment_functions,
         exchange_dict = exchange_dict,
-        exchange_dict_ts = {}
+        exchange_dict_ts = {},
+        names_dict = names_dict
     )
 
     developmentSet_augmented = DataAugmentation.augmentDataset(
         developmentSet,
         augment_functions,
         exchange_dict = exchange_dict,
-        exchange_dict_ts = {}
+        exchange_dict_ts = {},
+        names_dict = names_dict
     )
     logger.debug(f'len(trainingSet_augmented[0].comment_text: {trainingSet_augmented[0].comment_text}')
     logger.debug(f'len(trainingSet_augmented[1200].comment_text: {trainingSet_augmented[1200].comment_text}')
@@ -159,7 +171,8 @@ if __name__ == '__main__':
         testSet,
         augment_functions,
         exchange_dict = exchange_dict,
-        exchange_dict_ts = {}
+        exchange_dict_ts = {},
+        names_dict = names_dict
     )
 
     # Train a classifier on the complete augmented train dataset
