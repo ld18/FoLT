@@ -86,7 +86,7 @@ def exchangeNames(pos_tagged_words, **kwargs):
 
         else:
             new_pos_tagged_words.append(tuple(
-                word, pos_tag
+                (word, pos_tag)
             ))
 
     return new_pos_tagged_words
