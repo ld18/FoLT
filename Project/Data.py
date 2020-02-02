@@ -74,8 +74,11 @@ def readWordPairData():
 def makeExchangeDict(word_pairs):
     exchange_dict = {}
     for pair in word_pairs:
-        exchange_dict[pair[0]] = pair[1]
-        exchange_dict[pair[1]] = pair[0]
+        if not pair[0] in exchange_dict.keys():
+            exchange_dict[pair[0]] = pair[1]
+
+        if not pair[1] in exchange_dict.keys():
+            exchange_dict[pair[1]] = pair[0]
 
     return exchange_dict
 
