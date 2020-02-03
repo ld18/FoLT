@@ -50,6 +50,7 @@ if __name__ == '__main__':
     # Define features
     feature_list = [
         Features.getMostCommonWordsCleaned,
+        Features.getMostCommonWords,
         Features.getUnigramFeatures,
         Features.moreThanxWords,
     ]
@@ -57,25 +58,20 @@ if __name__ == '__main__':
     # Uninitialized classifier
     NBC = nltk.classify.NaiveBayesClassifier
 
-    # Try all combinations of features to get the best
-    best_result, results = Classifier.testFeatureCombinations(
-        trainingSet,
-        developmentSet,
+    classifier_dev = Classifier.Classifier(
         NBC,
+        Features.getFeatures,
         feature_list,
-        include_unigrams = most_informative_unigrams,
-        num_words_threshold = 71,
-        punctuation_threshold = 0.03685
+        include_unigrams=most_informative_unigrams,
+        num_words_threshold=72,
+        punctuation_threshold=0.03685
     )
-    # Currently Best combination: getMostCommonWordsCleaned, getUnigramFeatures,
-    # moreThanxWords
 
-    # Print the results
-    for accuracy, feature_combination in results:
-        print(
-            'Accuracy: {:.2f}'.format(accuracy),
-            'Features: ', [str(feature).split()[1] for feature in feature_combination]
-        )
+    classifier_dev.train(trainingSet)
+
+    print(Classifier.calculateAccuracy(classifier_dev.predict(
+        developmentSet
+    )))
 
     # Augment the training data
     # Define Functions for augmentation
@@ -119,20 +115,14 @@ if __name__ == '__main__':
     random.Random(123).shuffle(developmentSet_augmented)
     random.Random(123).shuffle(trainingSet_augmented)
 
-    # Get the best feature functions
-    best_feature_funcs = [
-        getattr(Features, str(func).split()[1])
-        for func in best_result[1]
-    ]
-
     # Train the classifier on the augmented data using the best-performing
     # features
     classifier_augmented = Classifier.Classifier(
         NBC,
         Features.getFeatures,
-        best_feature_funcs,
+        feature_list,
         include_unigrams=most_informative_unigrams,
-        num_words_threshold=71,
+        num_words_threshold=72,
         punctuation_threshold=0.03685
     )
 
@@ -153,9 +143,9 @@ if __name__ == '__main__':
     classifier_full = Classifier.Classifier(
         NBC,
         Features.getFeatures,
-        best_feature_funcs,
+        feature_list,
         include_unigrams=most_informative_unigrams,
-        num_words_threshold=71,
+        num_words_threshold=72,
         punctuation_threshold=0.03685
     )
 
@@ -179,7 +169,7 @@ if __name__ == '__main__':
     classifier_full_augmented = Classifier.Classifier(
         NBC,
         Features.getFeatures,
-        best_feature_funcs,
+        feature_list,
         include_unigrams=most_informative_unigrams,
         num_words_threshold=72,
         punctuation_threshold=0.03685
