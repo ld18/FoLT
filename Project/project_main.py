@@ -72,7 +72,23 @@ if __name__ == '__main__':
     print(Classifier.calculateAccuracy(classifier_dev.predict(
         developmentSet
     )))
+    FP = 0
+    FN = 0
 
+    for datapoint in developmentSet:
+        if not (datapoint.toxicity_predicted == datapoint.toxicity):
+            print(
+                f'Actual Toxicity: {datapoint.toxicity},',
+                f'Predicted toxicity: {datapoint.toxicity_predicted},',
+                datapoint.comment_text
+            )
+            if datapoint.toxicity_predicted == 1:
+                FP += 1
+            elif datapoint.toxicity_predicted == 0:
+                FN += 1
+
+    print(f'Number of false positives: {FP}')
+    print(f'number of false negatives: {FN}')
     # Augment the training data
     # Define Functions for augmentation
     augment_functions = [
@@ -177,7 +193,7 @@ if __name__ == '__main__':
 
     classifier_full_augmented.train(trainingSet_augmented + developmentSet_augmented)
 
-    classifier_full_augmented.predict(testSet_augmented)
+    classifier_full_augmented.predict(testSet_augmented[700:])
 
     Data.outputResults(testSet_augmented, './test_data_augmented_evaluation')
 
