@@ -195,7 +195,7 @@ if __name__ == '__main__':
 
     classifier_full_augmented.predict(testSet_augmented[700:])
 
-    Data.outputResults(testSet_augmented, './test_data_augmented_evaluation')
+    Data.outputResults(testSet_augmented[700:], './test_data_augmented_evaluation')
 
     # if True:
     #     feature_list = [
