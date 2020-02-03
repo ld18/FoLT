@@ -39,12 +39,17 @@ def augmentDuplicate(text, augment_functions, **kwargs):
 # Function which replaces all words which are keys in exchange_dict
 # with the respective value
 def exchangeByDict(pos_tagged_words, **kwargs):
-
+    # Empty list to store new word - postag tuples
     new_pos_tagged_words = []
 
+    # Iterate over all pos-tagged words
     for word, pos_tag in pos_tagged_words:
+        # CHeck if word is in exchange_dict
         if word.lower() in kwargs['exchange_dict']:
-            new_pos_tagged_words.append(tuple((kwargs['exchange_dict'][word.lower()], pos_tag)))
+            # If yes, replace
+            new_pos_tagged_words.append(
+                tuple((kwargs['exchange_dict'][word.lower()], pos_tag))
+            )
 
         else:
             new_pos_tagged_words.append(tuple((word, pos_tag)))
@@ -62,24 +67,34 @@ def exchangeTagSensitive(pos_tagged_words, **kwargs):
         ('his', 'PRP$') : ('her', 'PRP$'),
         ('hers', 'PRP') : ('his', 'PRP$')
     })
-
+    # Empty list to store new word - postag tuples
     new_pos_tagged_words = []
 
+    # Iterate over pos-tagged words
     for word, pos_tag in pos_tagged_words:
+        # Check if the combination of word and pos-tag is in the exchange dict
         if (word.lower(), pos_tag) in kwargs['exchange_dict_ts']:
-            new_pos_tagged_words.append(kwargs['exchange_dict_ts'][(word.lower(), pos_tag)])
+            # if yes, replace
+            new_pos_tagged_words.append(
+                kwargs['exchange_dict_ts'][(word.lower(), pos_tag)]
+            )
 
         else:
             new_pos_tagged_words.append((word, pos_tag))
 
     return new_pos_tagged_words
 
-# Function to exchange names, not tested
+# Function to exchange names
 def exchangeNames(pos_tagged_words, **kwargs):
+    # Empty list to store new word - postag tuples
     new_pos_tagged_words = []
 
+    # Iterate over pos-tagged words
     for word, pos_tag in pos_tagged_words:
+        # Check if the pos-tag is "proper noun" and the word can be found
+        # in the exchange dict
         if pos_tag == 'NNP' and word.lower() in kwargs['names_dict']:
+            # If yes, replace
             new_pos_tagged_words.append(
                 tuple((kwargs['names_dict'][word.lower()], pos_tag))
             )

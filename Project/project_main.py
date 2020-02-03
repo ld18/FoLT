@@ -18,6 +18,7 @@ if __name__ == '__main__':
     )
     logger.info("Started program.")
 
+    # Read the labeled data
     path = "src/train.tsv"
     datapoints, header, numberOfPoints = Data.readDatapointsFromFile(path)
     logger.info(str(numberOfPoints) + f" Datapoints found inside {path}.")
@@ -25,10 +26,11 @@ if __name__ == '__main__':
     # Shuffle dataset
     random.Random(1234).shuffle(datapoints)
 
+    # Split the labeled dataset
     trainingSet, developmentSet = Data.splitDataSet(datapoints)
     logger.info(f"Split data as following: {len(trainingSet)} for training, {len(developmentSet)} for development.")
 
-    # Get most informative unigram features
+    # Train a naive Bayes classifier on all unigram features
     unigram_classifier = nltk.classify.NaiveBayesClassifier.train(zip(
         [
             Features.getUnigramFeatures(
@@ -43,6 +45,7 @@ if __name__ == '__main__':
 
     print(unigram_classifier.most_informative_features(10))
 
+    # Get the most informative unigram features
     most_informative_unigrams = [
         w for w, _ in unigram_classifier.most_informative_features(9000)
     ]
@@ -55,9 +58,10 @@ if __name__ == '__main__':
         Features.moreThanxWords,
     ]
 
-    # Uninitialized classifier
+    # Uninitialized Naive Bayes classifier
     NBC = nltk.classify.NaiveBayesClassifier
 
+    # Initialize a classifier to be trained on the train split
     classifier_dev = Classifier.Classifier(
         NBC,
         Features.getFeatures,
@@ -67,8 +71,10 @@ if __name__ == '__main__':
         punctuation_threshold=0.03685
     )
 
+    # Train the classifier
     classifier_dev.train(trainingSet)
 
+    # Evaluate the classifier
     print(Classifier.calculateAccuracy(classifier_dev.predict(
         developmentSet
     )))
@@ -89,6 +95,8 @@ if __name__ == '__main__':
 
     print(f'Number of false positives: {FP}')
     print(f'number of false negatives: {FN}')
+
+    # -------------------------------------------------------------------------
     # Augment the training data
     # Define Functions for augmentation
     augment_functions = [
@@ -97,18 +105,19 @@ if __name__ == '__main__':
         DataAugmentation.exchangeNames
     ]
 
-    # Get exchange_dict
+    # Get exchange_dict of male-female word pairs
     exchange_dict = Data.makeExchangeDict(Data.readWordPairData())
 
+    # Get the names data as frequency distributions
     male_fd, female_fd = Data.read_names()
 
-    # Get names_dict
+    # Get the dictionary for name replacement
     names_dict = Data.makeExchangeDict(
         Data.makePairsFromFDs(
             male_fd, female_fd
         )
     )
-
+    # Augment the train set
     trainingSet_augmented = DataAugmentation.augmentDataset(
         trainingSet,
         augment_functions,
@@ -117,6 +126,7 @@ if __name__ == '__main__':
         names_dict = names_dict
     )
 
+    # Augment the development set
     developmentSet_augmented = DataAugmentation.augmentDataset(
         developmentSet,
         augment_functions,
@@ -131,8 +141,7 @@ if __name__ == '__main__':
     random.Random(123).shuffle(developmentSet_augmented)
     random.Random(123).shuffle(trainingSet_augmented)
 
-    # Train the classifier on the augmented data using the best-performing
-    # features
+    # Initialize a classifier for the augmented data
     classifier_augmented = Classifier.Classifier(
         NBC,
         Features.getFeatures,
@@ -142,20 +151,21 @@ if __name__ == '__main__':
         punctuation_threshold=0.03685
     )
 
+    # Train the classifier
     classifier_augmented.train(trainingSet_augmented)
 
+    # Evaluate the classifier on the augmented development set
     print(
         'Accuracy on development set with augmented data: ',
         Classifier.calculateAccuracy(classifier_augmented.predict(developmentSet_augmented))
     )
 
-    Data.outputResults(developmentSet_augmented, './output_test')
-
+    # -------------------------------------------------------------------------
     # Test data evaluation
     # Read the test data
     testSet = Data.readDatapointsFromFile('src/test.tsv')[0]
 
-    # Train the classifier on the complete train data (train + dev)
+    # Initialize a classifier to be trained on the complete train data (train + dev)
     classifier_full = Classifier.Classifier(
         NBC,
         Features.getFeatures,
@@ -165,10 +175,13 @@ if __name__ == '__main__':
         punctuation_threshold=0.03685
     )
 
+    # Train the classifier
     classifier_full.train(trainingSet + developmentSet)
 
+    # Predict the labels of the test set
     classifier_full.predict(testSet)
 
+    # Write the results file
     Data.outputResults(testSet, './test_data_evaluation')
 
 
@@ -181,7 +194,7 @@ if __name__ == '__main__':
         names_dict = names_dict
     )
 
-    # Train a classifier on the complete augmented train dataset
+    # Initialize a classifier to be trained on the complete augmented train dataset
     classifier_full_augmented = Classifier.Classifier(
         NBC,
         Features.getFeatures,
@@ -191,23 +204,11 @@ if __name__ == '__main__':
         punctuation_threshold=0.03685
     )
 
+    # Train the classifier
     classifier_full_augmented.train(trainingSet_augmented + developmentSet_augmented)
 
+    # Predict the labels of the augmented test set
     classifier_full_augmented.predict(testSet_augmented[700:])
 
+    # Write the classification result file
     Data.outputResults(testSet_augmented[700:], './test_data_augmented_evaluation')
-
-    # if True:
-    #     feature_list = [
-    #         Features.getMostCommonWords,
-    #         Features.getMostCommonWordsCleaned,
-    #         Features.getPortionOfCapitalWords,
-    #         Features.getPortionOfPunctuations
-    #     ]
-    #     for point in trainingSet:
-    #         print(point)
-    #         print("\t", Features.getFeatures(point.comment_text, feature_list))
-    #         # print("\t", Features.getMostCommonWords(point.comment_text))
-    #         # print("\t", Features.getMostCommonWordsCleaned(point.comment_text))
-    #         # print("\t", Features.getPortionOfCapitalWords(point.comment_text))
-    #         # print("\t", Features.getPortionOfPunctuations(point.comment_text))

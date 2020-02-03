@@ -46,16 +46,22 @@ def getPortionOfPunctuations(text, **kwargs):
 # in text is returned as a single feature with value 1
 def getUnigramFeatures(text, **kwargs):
 
-    # Get the set of words in the text
+    # Get the set of words (lowercased) in the text
     words = set([word.lower() for word in nltk.tokenize.word_tokenize(text)])
 
+    # Either return only the words specified in 'include_unigrams'
+    # as features or return each word as a feature
     if 'include_unigrams' in kwargs.keys():
+        # Iterate over the words in include_unigrams, return them as a feature
+        # of value 1 if they are present in the set of words and 0 otherwise
         if len(kwargs['include_unigrams']) > 0:
             return {
                 word : (1 if word in words else 0)
                 for word in kwargs['include_unigrams']
             }
+
     else:
+        # Return all words as features
         return {
             word : 1
             for word in words
