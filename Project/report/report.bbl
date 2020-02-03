@@ -1,10 +1,15 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{5}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Bird et~al.(2009)Bird, Loper, and Klein}]{nltkbook}
 Steven Bird, Edward Loper, and Ewan Klein. 2009.
 \newblock \emph{Natural Language Processing with Python}.
 \newblock O'Reilly Media Inc.
+
+\bibitem[{Kuhn(1955)}]{hungarianmethod}
+{H.W.} Kuhn. 1955.
+\newblock The hungarian method for the assignment problem.
+\newblock \emph{Naval Research Logistics Quarterly}.
 
 \bibitem[{Lu et~al.(2018)Lu, Mardziel, Wu, Amancharla, and Datta}]{Lu2018}
 Kaiji Lu, Piotr Mardziel, Fangjing Wu, Preetam Amancharla, and Anupam Datta.
